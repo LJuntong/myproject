@@ -142,6 +142,9 @@ def delete(request):
 def edit(request):
     # 接受参数
     uid = request.GET.get('uid',None)
+    # if not uid:
+    #     return HttpResponse('<script>alert("没有用户数据");location.href="'+reverse('myadmin_user_list')+'"</script>')
+    
     # 获取对象
     ob = Users.objects.get(id=uid)
 

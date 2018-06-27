@@ -25,7 +25,7 @@
         <div class="widget am-cf">
             <div class="widget-body am-fr">
 
-                <form action="{% url 'myadmin_goods_list' %}" method="post" enctype="multipart/form-data" class="am-form tpl-form-line-form">
+                <form action="{% url 'myadmin_goods_add' %}" method="post" enctype="multipart/form-data" class="am-form tpl-form-line-form">
                     {% csrf_token %}
                     
                     <div class="am-form-group">

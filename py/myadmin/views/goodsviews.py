@@ -1,5 +1,5 @@
 from django.shortcuts import render,reverse
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 
 from . typesviews import gettypesorder
 from . userviews import uploads
@@ -7,7 +7,7 @@ from . userviews import uploads
 from .. models import Goods,Types
 
 # Create your views here.
-
+#商品添加
 def add(request):
     if request.method == 'GET':
         tlist = gettypesorder()
@@ -35,8 +35,8 @@ def add(request):
         # 执行用户的创建
         ob = Goods.objects.create(**data)
 
-        return HttpResponse('post')
-
+        return HttpResponse('<script>alert("添加成功");location.href="'+reverse('myadmin_goods_list')+'"</script>')
+#商品列表
 def index(request):
 
     glist = Goods.objects.all()
@@ -45,11 +45,63 @@ def index(request):
 
     return render(request,'myadmin/goods/list.html',context)
 
-
+#商品删除
 def delete(request):
+    try:
+        #获取商品信息
+        uid = request.GET.get('uid',None)
+        obj = Goods.objects.get(id=uid)
 
-    pass
+        #执行删除
+        obj.delete()
+        
+        data = {'msg':'删除成功','code':0}
+        
+    except:
+        data = {'msg':'删除失败','code':1}
+
+    return JsonResponse(data)
+
+
 
 def edit(request):
-
     pass
+    # print(123)
+
+    if request.method == 'GET':
+        # 接收参数
+        uid = request.GET.get('uid',None)
+
+        # 获取对象
+        obj = Goods.objects.get(id=uid)
+        # 分配数据
+        context = {'uinfo':obj}
+        # 显示编辑页面
+        return render(request,'myadmin/goods/edit.html',context)
+
+    elif request.method == 'POST':
+        uid = request.GET.get('uid',None)
+
+        # 获取对象
+        obj = Goods.objects.get(id=uid)
+
+        try:
+                # 判断是否上传了新的图片
+            if request.FILES.get('pic',None):
+                if obj.pics:
+                    # 如果使用的不是默认图 则删除之前上传的头像
+                    import os
+                    os.remove('.'+obj.pics)
+
+        # 执行上传
+                obj.pics = uploads(request) 
+
+            obj.title = request.POST['title']
+            obj.descr = request.POST['descr']
+            obj.price = request.POST['price']
+            obj.store = request.POST['store']
+            obj.save()
+
+            return HttpResponse('<script>alert("修改成功");location.href="'+reverse('myadmin_goods_list')+'"</script>')
+        except:
+            return HttpResponse('<script>alert("修改失败");location.href="'+reverse('myadmin_goods_edit')+'?uid='+str(obj.id)+'"</script>')

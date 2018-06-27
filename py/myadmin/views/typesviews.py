@@ -56,6 +56,7 @@ def index(request):
 
     # tlist = Types.objects.all()
     tlist = gettypesorder()
+    #分配分类数据
     context = {'tlist':tlist}
     return render(request,'myadmin/types/list.html',context)
 
@@ -79,4 +80,23 @@ def delete(request):
 
 
 def edit(request):
-    pass
+     # 接受参数
+    uid = request.GET.get('uid',None)
+    if not uid:
+        return HttpResponse('<script>alert("没有用户数据");location.href="'+reverse('myadmin_types_list')+'"</script>')
+    
+    # 获取对象
+    ob = Types.objects.get(id=uid)
+
+    if request.method == 'GET':
+       
+        # 分配数据
+        context = {'uinfo':ob}
+        # 显示编辑页面
+        return render(request,'myadmin/types/edit.html',context)
+
+    elif request.method == 'POST':
+
+        ob.name = request.POST['name']
+        ob.save()
+        return HttpResponse('<script>alert("更新成功");location.href="'+reverse('myadmin_types_list')+'"</script>')

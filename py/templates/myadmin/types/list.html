@@ -46,10 +46,10 @@
                         <div class="am-form-group tpl-table-list-select">
                             <select name="type" data-am-selected="{btnSize: 'sm'}" style="display: none;">
                               <option value="all">所有条件</option>
-                              <option value="username">姓名</option>
-                              <option value="email">邮箱</option>
+                              <option value="username">分类名</option>
+                              <!-- <option value="email">邮箱</option>
                               <option value="phone">手机号</option>
-                              <option value="sex">性别</option>
+                              <option value="sex">性别</option> -->
                             </select>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                                     <td class="am-text-middle">{{ v.pid }}</td>
                                     <td class="am-text-middle">
                                         <div class="tpl-table-black-operation">
-                                            <a href="{% url 'myadmin_user_edit' %}?uid={{ v.id }}">
+                                            <a href="{% url 'myadmin_types_edit' %}?uid={{ v.id }}">
                                                 <i class="am-icon-pencil"></i> 编辑
                                             </a>
                                             <a href="javascript:;" class="tpl-table-black-operation-del">
