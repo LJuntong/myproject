@@ -39,10 +39,62 @@ def add(request):
 #商品列表
 def index(request):
 
-    glist = Goods.objects.all()
+    #获取搜索条件
+    types = request.GET.get('type',None)
+    keywords = request.GET.get('keywords',None)
 
-    context = {'glist':glist}
+    #判断是否具有搜索条件
+    if types:
+        #有搜索条件
+        if types == 'all':
+            #全条件搜索
+            from django.db.models import Q
+            goodslist = Goods.objects.filter(
+                Q(title__contains=keywords)|
+                Q(price__contains=keywords)
+            )
 
+        elif types == 'title':
+            #按照商品名搜索
+            goodslist = Goods.objects.filter(title__contains=keywords)
+
+        # elif types == 'price':
+        #     if keywords:
+        #         print('0')
+        #         goodslist = Types.objects.filter(name__contains=keywords)
+        #         # 要搜索Types的ＰＩＤ
+        #         # print(goodslist.pid)
+        #     else:
+        #         print(1)
+        #         goodslist = Types.objects.all()
+
+            #按照商品所属分类
+            # goodslist = Goods.objects.filter(price__contains=keywords)
+
+
+    else:
+        #获取所有商品数据
+        goodslist = Goods.objects.filter()
+
+
+    #导入分页类
+    from django.core.paginator import Paginator
+    #实例化分页对象，参数１　　数据集合　参数２　每页显示条数
+    paginator = Paginator(goodslist,5)
+    #获取当前页码数
+    p = request.GET.get('p',1)
+    #获取当前页的数据 
+    glist = paginator.page(p)
+    #获取页码　range()
+    num = paginator.page_range
+    # print(num)
+    #分配数据
+    context = {'goodslist':glist,'num':num}
+
+
+    # #分配商品数据
+    # context = {'goodslist':glist}
+    #加载列表
     return render(request,'myadmin/goods/list.html',context)
 
 #商品删除
