@@ -48,9 +48,30 @@ urlpatterns = [
     # 清空购物车
     url(r'^cartclear/$', views.cartclear,name='myhome_cartclear'),
 
+    # 三级城市联动
+    url(r'^getcitys/$',views.getcity,name="getcity"),
+
     # 订单
+    #  订单确认页面
+    url(r'^ordercheck/$', views.ordercheck,name='myhome_ordercheck'),
+    url(r'^addressedit/$', views.addressedit,name='myhome_addressedit'),
+    url(r'^addressadd/$', views.addressadd,name='myhome_addressadd'),
+    #  订单生成
+    url(r'^ordercreate/$', views.ordercreate,name='myhome_ordercreate'),
+
+    #  支付
+    url(r'^buy/$', views.buy,name='myhome_buy'),
+
+    #  支付成功
+
 
     # 个人中心
+    url(r'^mycenter/$', views.mycenter,name='myhome_mycenter'),
+    #个人资料
+    url(r'^mygrzx/$', views.grzx,name='myhome_grzx'),
+    # 我的订单
+    url(r'^myorders/$', views.myorders,name='myhome_myorders'),
+
 
     # # session测试
     # url(r'^sesset/$', views.sesset,name='myhome_sesset'),

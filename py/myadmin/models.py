@@ -98,3 +98,22 @@ class OrderInfo(models.Model):
 '''
 
 
+# 城市三级联动
+class Citys(models.Model):
+    # id name upid 
+    name = models.CharField(max_length=100)
+    upid = models.IntegerField()
+
+    # myhome_citys
+    class Meta():
+        db_table = 'citys'
+
+
+
+#后台登录
+class Ht(models.Model):
+    username = models.CharField(max_length=50,unique=True)
+    password = models.CharField(max_length=80)
+
+    class Meta():
+        db_table = 'myadmin_ht'
